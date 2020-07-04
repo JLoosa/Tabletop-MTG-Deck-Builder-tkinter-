@@ -7,11 +7,11 @@ class Deck:
     def __init__(self, name="Deck", mainboard=None, sideboard=None, maybeboard=None):
         # Avoid mutable default values
         if mainboard is None:
-            mainboard = list()
+            mainboard = dict()
         if sideboard is None:
-            sideboard = list()
+            sideboard = dict()
         if maybeboard is None:
-            maybeboard = list()
+            maybeboard = dict()
         # Define class-wise variables
         self.__deck_name = None
         self.__mainboard = None
@@ -29,31 +29,31 @@ class Deck:
         self.__deck_name = name
 
     # Returns a copy of the mainboard. This is to prevent accidental modification of the board
-    def get_mainboard(self) -> list:
-        return [item for item in self.__mainboard]
+    def get_mainboard(self) -> dict:
+        return self.__mainboard.copy()
 
     # Stores a copy of the board. This is to prevent accidental modification of the board
-    def set_mainboard(self, board: list):
+    def set_mainboard(self, board: dict):
         # TODO: Ensure that the board being passes in only contains valid cards
-        self.__mainboard = [item for item in board]
+        self.__mainboard = board.copy()
 
     # Returns a copy of the sideboard. This is to prevent accidental modification of the board
-    def get_sideboard(self) -> list:
-        return [item for item in self.__sideboard]
+    def get_sideboard(self) -> dict:
+        return self.__sideboard.copy()
 
     # Stores a copy of the board. This is to prevent accidental modification of the board
-    def set_sideboard(self, board: list):
+    def set_sideboard(self, board: dict):
         # TODO: Ensure that the board being passes in only contains valid cards
-        self.__sideboard = [item for item in board]
+        self.__sideboard = board.copy()
 
     # Returns a copy of the maybeboard. This is to prevent accidental modification of the board
     def get_maybeboard(self) -> list:
-        return [item for item in self.__maybeboard]
+        return self.__maybeboard.copy()
 
     # Stores a copy of the board. This is to prevent accidental modification of the board
-    def set_maybeboard(self, board: list):
+    def set_maybeboard(self, board: dict):
         # TODO: Ensure that the board being passes in only contains valid cards
-        self.__maybeboard = [item for item in board]
+        self.__maybeboard = board.copy()
 
 
 # Accepts a pack to a deck json file as input
@@ -99,9 +99,8 @@ def save_deck(folder_path: str, deck: Deck) -> bool:
             "maybeboard": deck.get_maybeboard()
         }
         with open(file_path, "r", encoding="UTF8") as outfile:
-            json.dump(deck_dict, file_path)
+            json.dump(deck_dict, outfile)
         return True
     except IOError as error:
         print("Unexpected error when saving deck:", error)
         return False
-    return True
